@@ -208,4 +208,99 @@ const verifyEmail = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
-export { register, login, logout, sendVerifyOtp, verifyEmail };
+
+// check if user is authenticated
+const isAuthenticated = async (req, res) => {
+  try {
+    return res.json({ success: true });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+//Send Password Reset OTP
+
+const sendResetOtp = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "Email is Required" });
+  }
+
+  try {
+    //find the user by given userid
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "User not Found" });
+    }
+
+    //generate one otp and save it in DB and sent in email
+
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+    user.resetOtp = otp;
+    user.resetOtpExpireAt = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    const mailOption = {
+      from: process.env.SENDER_EMAIL,
+      to: user.email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
+    };
+    await transporter.sendMail(mailOption);
+    return res.json({ success: true, message: "OTP send to your Email " });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+//Reset user Password
+const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.json({
+      success: false,
+      message: "Email , OTP and New Password are required",
+    });
+  }
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: `${user} User not found` });
+    }
+
+    // if user haven't entered any otp or the otp is matching with database it will execute
+    if (user.resetOtp === "" || user.resetOtp !== otp) {
+      return res.json({ success: false, message: "Invalid OTP" });
+    }
+    // if the otp matches then check for the expiry
+    // if the otp is already expired
+    if (user.resetOtpExpireAt < Date.now) {
+      return res.json({ success: false, message: "OTP Expired" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetOtp = "";
+    user.resetOtpExpireAt = 0;
+
+    await user.save();
+
+    return res.json({success: true , message: "Password has been reset Successfully"})
+    
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+export {
+  register,
+  login,
+  logout,
+  sendVerifyOtp,
+  verifyEmail,
+  isAuthenticated,
+  sendResetOtp,
+  resetPassword,
+};
