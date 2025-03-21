@@ -8,7 +8,9 @@
 html,body{
   height: 100%;
   width: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.215), rgba(212, 224, 243, 0.562));
-  box-shadow: inset 0 0 10px rgba(81, 77, 94, 0.973); 
-  
+  background: linear-gradient(135deg, #0a192fea, #102a43e2, #1e3a8a);
+  box-shadow: inset 0 0 10px rgba(76, 69, 97, 0.639); 
 }
+
+
+

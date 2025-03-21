@@ -1,9 +1,9 @@
 import logo from "./logo.svg"
-import hand_wave from "./hand_wave.jpg"
 import menu from "./menu.svg"
+import encrypted from "./encrypted.svg"
 
 export const assets = {
     logo,
-    hand_wave,
-    menu
+    menu,
+    encrypted
 }
