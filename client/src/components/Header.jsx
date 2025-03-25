@@ -1,9 +1,15 @@
 
-
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets.js";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/appContext.jsx";
+
 
 const Header = () => {
+  const navigate = useNavigate();
+  const {userData} = useContext(AppContext);
+
+  
   return (
     <div className="w-full flex flex-col items-center  justify-center min-h-screen text-center px-6 py-20 sm:py-28  text-gray-300 rounded-lg ">
       <img
@@ -17,7 +23,7 @@ const Header = () => {
       </h1>
 
       <h2 className="text-2xl sm:text-3xl mt-2.5 font-medium text-gray-50">
-        Welcome to AuthSecure
+        Welcome {userData ? userData.name : ""} to AuthSecure
       </h2>
 
       <p className="mt-3 max-w-md text-lg font-extralight ">
@@ -26,6 +32,7 @@ const Header = () => {
       </p>
 
       <button
+        onClick={() => navigate("/login")}
         className="mt-6 px-6 py-3 text-lg font-semibold rounded-lg shadow-md
             hover:bg-transparent bg-white text-blue-700 hover:text-white transition duration-300 transform hover:scale-110 hover:shadow-lg border border-indigo-500"
       >

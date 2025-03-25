@@ -23,7 +23,7 @@ authRouter.post("/send-verify-otp", userAuth, sendVerifyOtp);
 // verify the account using otp
 authRouter.post("/verify-account", userAuth, verifyEmail);
 // check whether registered user is there or not
-authRouter.post("/is-auth", userAuth, isAuthenticated)
+authRouter.get("/is-auth", userAuth, isAuthenticated)
 // send reset otp
 authRouter.post("/send-reset-otp", sendResetOtp)
 // change password 
