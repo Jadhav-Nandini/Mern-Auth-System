@@ -16,11 +16,15 @@ import { toast } from "react-toastify";
     const getAuthState = async () => {
         try {
             const {data} = await axios.get(backendUrl + "/api/auth/is-auth")
-
+         
             //if user is loggedIn then it will set to true
             if(data.success){
                 setIsLoggedin(true)
                 getUserData();
+            
+
+            }else{
+                setIsLoggedin(false)
             }
 
         } catch (error) {
@@ -41,7 +45,8 @@ import { toast } from "react-toastify";
 
     useEffect(()=> {
       getAuthState()  
-    })
+    },[])
+
 
     
     const value = {

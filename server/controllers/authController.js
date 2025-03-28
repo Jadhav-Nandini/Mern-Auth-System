@@ -42,7 +42,7 @@ const register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, //only http req can acess this cookie
       // if this environment is production it will give true if not equal then it will give false
-      secure: process.env.NODE_ENV === "production", //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
+      secure: process.env.NODE_ENV === "production" ? true : false, //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //if we work in local environment then we can write a strict so backend and frontend on local host but if we deploy on live server writing strict will show nothing
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days 24hr 60min 60 sec 1000millisec ( 7days expiry time for cookie)
     });
@@ -102,7 +102,7 @@ const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, //only http req can acess this cookie
       // if this environment is production it will give true if not equal then it will give false
-      secure: process.env.NODE_ENV === "production", //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
+      secure: process.env.NODE_ENV === "production" ? true : false, //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //if we work in local environment then we can write a strict so backend and frontend on local host but if we deploy on live server writing strict will show nothing
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days 24hr 60min 60 sec 1000millisec ( 7days expiry time for cookie)
     });
@@ -119,7 +119,7 @@ const logout = async (req, res) => {
     res.clearCookie("token", {
       httpOnly: true, //only http req can acess this cookie
       // if this environment is production it will give true if not equal then it will give false
-      secure: process.env.NODE_ENV === "production", //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
+      secure: process.env.NODE_ENV === "production" ? true : false, //whenever we will run this project in live server then it will run on https -true and ifwe run in local development then it will run on http it means no secure - false
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //if we work in local environment then we can write a strict so backend and frontend on local host but if we deploy on live server writing strict will show nothing
     });
 
